@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>函数白板 · Haskell 节点连线</title>
+<link rel="stylesheet" href="/typo/fonts/fonts.css">
+<link rel="stylesheet" href="/typo/css/tokens.css">
+<link rel="stylesheet" href="/typo/css/base.css">
+<link rel="stylesheet" href="/static/board.css">
+</head>
+<body class="theme-night nb">
+
+<header class="nb-bar">
+  <div class="nb-brand">
+    <span class="nb-mark"></span>
+    <span class="nb-name">函数白板</span>
+    <span class="nb-sub">NODE BOARD · HASKELL</span>
+  </div>
+  <div class="nb-mid">
+    <span class="nb-root" id="root-path" title="">…</span>
+    <span class="nb-sep">/</span>
+    <span class="nb-graph" id="graph-name">未命名</span>
+    <span class="nb-count" id="graph-count">0 节点 · 0 连线</span>
+  </div>
+  <div class="nb-right">
+    <button class="nb-btn" id="btn-fit" title="缩放到全部节点（F）">适应</button>
+    <button class="nb-btn" id="btn-lib" title="打开元件库（空格）">元件库</button>
+    <button class="nb-btn" id="btn-sample" title="载入示例图">示例</button>
+    <button class="nb-btn" id="btn-clear" title="清空画布">清空</button>
+    <button class="nb-btn nb-btn--q" id="btn-help" title="怎么用（?）">?</button>
+    <span class="nb-engine" id="engine">
+      <i class="nb-dot"></i><span id="engine-text">预热中</span>
+    </span>
+  </div>
+</header>
+
+<main class="nb-stage" id="stage">
+  <div class="nb-world" id="world">
+    <svg class="nb-wires" id="wires">
+      <defs>
+        <marker id="arrow" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto">
+          <path d="M0,0 L8,4 L0,8 z" fill="currentColor"></path>
+        </marker>
+      </defs>
+      <g id="wire-layer"></g>
+    </svg>
+    <div class="nb-nodes" id="nodes"></div>
+  </div>
+
+  <div class="nb-empty" id="empty" hidden>
+    <p>空白画布</p>
+    <button class="nb-btn" id="btn-empty-lib">右键取函数，或点这里打开元件库</button>
+  </div>
+
+  <div class="nb-hint">
+    <span>右键取函数</span><span>拖端口连线</span><span>滚轮缩放</span><span>空白处拖动平移</span><span>Delete 删除</span>
+  </div>
+</main>
+
+<footer class="nb-status">
+  <span id="status-eval">就绪</span>
+  <span class="nb-grow"></span>
+  <span id="status-incr"></span>
+  <span id="status-engine"></span>
+</footer>
+
+<div class="nb-palette" id="palette" hidden>
+  <div class="nb-pal-head">
+    <input id="pal-q" class="nb-pal-q" placeholder="搜函数 / 类型，如 Term、开题、Either" autocomplete="off" spellcheck="false">
+    <span class="nb-pal-count" id="pal-count"></span>
+  </div>
+  <div class="nb-pal-body" id="pal-list"></div>
+  <div class="nb-pal-foot" id="pal-foot"></div>
+</div>
+
+<div class="nb-menu" id="sample-menu" hidden></div>
+
+<div class="nb-menu" id="node-menu" hidden>
+  <button data-act="dup">复制一份</button>
+  <button data-act="dis">禁用 / 启用</button>
+  <button data-act="del" class="danger">删除</button>
+</div>
+
+<div class="nb-help" id="help" hidden>
+  <div class="nb-help-in">
+    <div class="nb-help-head">
+      <span class="micro">怎么用 · 一分钟</span>
+      <button class="nb-help-x" id="help-close" aria-label="关闭">×</button>
+    </div>
+    <ol class="nb-help-list">
+      <li><b>右键空白处</b>取函数。按分类列出工程导出的元件，带搜索；点一项就落在你右键的位置。</li>
+      <li><b>从右圆点拖到左圆点</b>连线。拖动时能接的端口亮绿、接不上的标红；接错会说「`[String]` 不是 `String`」。</li>
+      <li><b>端口上写的就是类型</b>，长类型悬停看全文。悬停节点标题看它来自哪个函数。</li>
+      <li><b>节点里直接出值</b>。显示 <code>⟨Ob⟩</code> 表示这个值没有 Show 实例——它照常参与连线，只是打印不出来。</li>
+      <li><b>底部状态栏</b>写「本次重算 9 个 · 沿用 8 个」：只重算变了的下游，不动就是 0ms。</li>
+      <li>滚轮缩放、空白拖动平移、<b>F</b> 缩放到全部、<b>Delete</b> 删除选中、<b>Ctrl+Z</b> 撤销。</li>
+      <li>关掉那个黑窗口，引擎就停了；再双击 <code>函数白板.cmd</code> 重开，画布会自己恢复。</li>
+    </ol>
+    <p class="nb-help-foot">完整教程：<code>教程.md</code> · 常见故障：<code>README.md</code></p>
+  </div>
+</div>
+
+<div class="nb-toast" id="toast" hidden></div>
+<pre class="nb-audit" id="audit-json" hidden></pre>
+
+<script src="/static/app.js"></script>
+</body>
+</html>
